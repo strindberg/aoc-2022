@@ -1,40 +1,29 @@
 import java.lang.Integer.max
 
 fun main() {
-    fun part1(input: List<String>): Int {
-        var max = 0
-        var total = 0
-        input.forEach { string ->
-            if (string.isEmpty()) {
-                max = max(total, max)
-                total = 0
-            } else {
-                total += string.toInt()
-            }
-        }
-        return max
-    }
+    fun part1(input: List<String>): Int =
+            input.fold(Pair(0, 0)) { (max, total), line ->
+                if (line.isEmpty())
+                    Pair(max(total, max), 0)
+                else
+                    Pair(max, total + line.toInt())
+            }.first
 
-    fun part2(input: List<String>): Int {
-        val totals = mutableListOf<Int>()
-        var total = 0
-        input.forEach { string ->
-            if (string.isEmpty()) {
-                totals.add(total)
-                total = 0
-            } else {
-                total += string.toInt()
-            }
-        }
-        return totals.sortedDescending().take(3).sum()
-    }
-
-    // test if implementation meets criteria from the description, like:
-    // val testInput = readInput("Day01")
-    // check(part1(testInput) == 1)
+    fun part2(input: List<String>): Int =
+            input.fold(Pair(listOf(0, 0, 0), 0)) { (maxThree, total), line ->
+                if (line.isEmpty())
+                    Pair((maxThree + total).sortedDescending().take(3), 0)
+                else
+                    Pair(maxThree, total + line.toInt())
+            }.first.sum()
 
     val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
 
+    val part1 = part1(input)
+    println(part1)
+    check(part1 == 69693)
+
+    val part2 = part2(input)
+    println(part2)
+    check(part2 == 200945)
 }

@@ -31,11 +31,12 @@ object Rock : Move {
 object Paper : Move {
     override val points = 2
 
-    override fun beats(other: Move) = when (other) {
-        is Rock -> WIN
-        is Paper -> DRAW
-        else -> LOSS
-    }
+    override fun beats(other: Move) =
+            when (other) {
+                is Rock -> WIN
+                is Paper -> DRAW
+                else -> LOSS
+            }
 
     override fun askedFor(result: Result) =
             when (result) {
@@ -47,11 +48,12 @@ object Paper : Move {
 
 object Scissor : Move {
     override val points = 3
-    override fun beats(other: Move) = when (other) {
-        is Paper -> WIN
-        is Scissor -> DRAW
-        else -> LOSS
-    }
+    override fun beats(other: Move) =
+            when (other) {
+                is Paper -> WIN
+                is Scissor -> DRAW
+                else -> LOSS
+            }
 
     override fun askedFor(result: Result) =
             when (result) {
@@ -72,37 +74,36 @@ fun getSecondResult(second: Char) =
 
 fun main() {
 
-    fun part1(input: List<String>): Int {
-        return input.sumOf { line ->
-            val first = getFirstMove(line[0])
-            val second = getSecondMove(line[2])
-            when (second.beats(first)) {
-                WIN -> second.points + 6
-                DRAW -> second.points + 3
-                LOSS -> second.points
+    fun part1(input: List<String>): Int =
+            input.sumOf { line ->
+                val first = getFirstMove(line[0])
+                val second = getSecondMove(line[2])
+                when (second.beats(first)) {
+                    WIN -> second.points + 6
+                    DRAW -> second.points + 3
+                    LOSS -> second.points
+                }
             }
-        }
-    }
 
-    fun part2(input: List<String>): Int {
-        return input.sumOf { line ->
-            val first = getFirstMove(line[0])
-            val result = getSecondResult(line[2])
-            val second = first.askedFor(result)
-            when (result) {
-                WIN -> second.points + 6
-                DRAW -> second.points + 3
-                LOSS -> second.points
+    fun part2(input: List<String>): Int =
+            input.sumOf { line ->
+                val first = getFirstMove(line[0])
+                val result = getSecondResult(line[2])
+                val second = first.askedFor(result)
+                when (result) {
+                    WIN -> second.points + 6
+                    DRAW -> second.points + 3
+                    LOSS -> second.points
+                }
             }
-        }
-    }
-
-    // test if implementation meets criteria from the description, like:
-    // val testInput = readInput("Day01")
-    // check(part1(testInput) == 1)
 
     val input = readInput("Day02")
-    println(part1(input))
-    println(part2(input))
 
+    val part1 = part1(input)
+    println(part1)
+    check(part1 == 8933)
+
+    val part2 = part2(input)
+    println(part2)
+    check(part2 == 11998)
 }
