@@ -1,11 +1,13 @@
-fun priority(char: Char): Int =
+fun priority(char: Char) =
         if (char.isUpperCase()) char - 'A' + 27 else if (char.isLowerCase()) char - 'a' + 1 else throw RuntimeException()
+
+fun String.uniqueChars() = this.toSet().toList()
 
 fun main() {
     fun part1(input: List<String>): Int =
             input.sumOf { line ->
-                val first = line.take(line.length / 2).toSet().toList()
-                val second = line.takeLast(line.length / 2).toSet().toList()
+                val first = line.take(line.length / 2).uniqueChars()
+                val second = line.takeLast(line.length / 2).uniqueChars()
                 val doubles = (first + second)
                         .groupBy { it }
                         .filter { it.value.size > 1 }
@@ -18,7 +20,7 @@ fun main() {
                 if (list.size < 2) {
                     Pair(sum, list + line)
                 } else {
-                    val triples = (list[0].toSet().toList() + list[1].toSet().toList() + line.toSet().toList())
+                    val triples = (list[0].uniqueChars() + list[1].uniqueChars() + line.uniqueChars())
                             .groupBy { it }
                             .filter { it.value.size == 3 }
                             .map { it.key }
